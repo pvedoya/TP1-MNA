@@ -32,7 +32,7 @@ photo_width = int(args.width)
 people_amount = int(args.people)
 per_person_amount = int(args.amount)
 
-photo_matrix = generate_photo_matrix(photo_set_path, photo_height, photo_width, people_amount, per_person_amount)
+photo_matrix, photo_dict = generate_photo_matrix(photo_set_path, photo_height, photo_width, people_amount, per_person_amount)
 photos_og = np.copy(photo_matrix)
 anon_vector = generate_photo_vector(anon_photo_path, photo_height, photo_width)
 
@@ -53,6 +53,4 @@ if match_percentage > threshold:
     print(f'Closest match: {row}, distance: {match_percentage}')
 else:
     print(f'Match found with {match_percentage} distance.')
-    print(f'Photo Number ID: {row}')
-    original_photo = photos_og[row]
-    generate_face(np.reshape(original_photo, [1, len(original_photo)]), photo_height, photo_width, './match.png')
+    print(f'Photo Match Path: {photo_dict[row]}')
