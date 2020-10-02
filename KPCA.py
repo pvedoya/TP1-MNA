@@ -1,4 +1,4 @@
 
 # TODO
-def calculate_kpca(images, height, width):
-    return images, height, width
+def calculate_kpca(images):
+    return images, 0, 0

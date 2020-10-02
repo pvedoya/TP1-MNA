@@ -4,6 +4,7 @@ from utils import change_base
 from utils import find_closest_match
 from utils import generate_photo_matrix
 from utils import generate_photo_vector
+from utils import generate_face
 from KPCA import calculate_kpca as KPCA
 from PCA import PCA
 
@@ -32,23 +33,12 @@ people_amount = int(args.people)
 per_person_amount = int(args.amount)
 
 photo_matrix = generate_photo_matrix(photo_set_path, photo_height, photo_width, people_amount, per_person_amount)
-print(f'photo matrix dimensions: {photo_matrix.shape}')
 anon_vector = generate_photo_vector(anon_photo_path, photo_height, photo_width)
-print(f'photo vector dimensions: {anon_vector.shape}')
-
-# photo_matrix = np.array([[1, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0], [0, 0, 1, 0, 1, 0], [0, 0, 0, 1, 0, 1]])
-# anon_vector = np.reshape([0, 1, 0, 0, 0, 0], [6, 1])
-# photo_height = 3
-# photo_width = 2
-
-# print(photo_matrix)
 
 if is_kpca:
-    eigenvectors, weights, meanPhoto = KPCA(photo_matrix, photo_height, photo_width)  # TODO
+    eigenvectors, weights, meanPhoto = KPCA(photo_matrix)  # TODO
 else:
-    eigenvectors, weights, meanPhoto = PCA(photo_matrix, photo_height, photo_width)
-
-# print(f'weights: \n{weights}\neigenv:\n{eigenvectors}\nmean photo: \n{meanPhoto}')
+    eigenvectors, weights, meanPhoto = PCA(photo_matrix)
 
 anonWeight = change_base(np.reshape(anon_vector, [len(anon_vector[0]), 1]), eigenvectors,
                          np.reshape(meanPhoto, [len(meanPhoto[0]), 1]))
@@ -56,13 +46,12 @@ anonWeight = np.reshape(anonWeight, [1, len(anonWeight)])
 
 closestVector, row, match_percentage = find_closest_match(anonWeight, weights)
 
-print(f'Closest match: {row}, distance: {match_percentage}')
-
 if match_percentage > threshold:
     print(f'No match found. Photo had match distance of {match_percentage}, '
           f'higher than threshold of {threshold}')
+    print(f'Closest match: {row}, distance: {match_percentage}')
 else:
     print(f'Match found with {match_percentage} distance.')
-    original_photo = photo_matrix[row]
     print(f'Photo Number ID: {row}')
-    # print_match(original_photo)
+    # original_photo = photo_matrix[row]
+    # generate_face(np.reshape(original_photo, [len(original_photo), 1]), photo_height, photo_width, './lenia.png')

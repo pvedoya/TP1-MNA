@@ -24,7 +24,6 @@ def find_closest_match(vector, matrix):
     return matrix[matchPosition], matchPosition, minDistance
 
 
-# TODO
 def generate_photo_matrix(photo_set_path, height, width, people_amount, per_person_amount):
     photo_area = height * width
     people_area = people_amount * per_person_amount
@@ -44,8 +43,12 @@ def generate_photo_matrix(photo_set_path, height, width, people_amount, per_pers
     return photo_matrix
 
 
-# TODO
-def generate_photo_vector(anon_photo_path, height, width):
+def generate_photo_vector(photo_path, height, width):
     photo_area = height * width
-    photo = plt.imread(anon_photo_path) / 255.0
+    photo = plt.imread(photo_path)
     return np.reshape(photo, [1, photo_area])
+
+
+def generate_face(vector, height, width, path):
+    face = vector.reshape(height, width)
+    plt.imsave(path, np.rot90(face, axes=(1, 0)), cmap='gray', format='png')
