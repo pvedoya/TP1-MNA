@@ -66,7 +66,6 @@ def find_closest_match(vector, matrix):
     return matrix[matchPosition], matchPosition, minDistance
 
 
-# TODO
 def generate_photo_matrix(photo_set_path, height, width, people_amount, per_person_amount):
     photo_area = height * width
     people_area = people_amount * per_person_amount
@@ -74,20 +73,26 @@ def generate_photo_matrix(photo_set_path, height, width, people_amount, per_pers
     dirs = [f for f in listdir(photo_set_path) if isdir(join(photo_set_path, f))]
     photo_matrix = np.zeros([people_area, photo_area])
 
-    img_num = 1
+    photo_dict = {}
+    img_num = 0
     for person in dirs:
         for photo in listdir(photo_set_path + '/' + person):
             photo_path = photo_set_path + '/' + person + '/' + photo
-            photo_matrix[img_num-1, :] = generate_photo_vector(photo_path, height, width)
+            photo_matrix[img_num, :] = generate_photo_vector(photo_path, height, width)
+            photo_dict[img_num] = photo_path
             img_num += 1
-            if (img_num-1) % per_person_amount == 0:
+            if img_num % per_person_amount == 0:
                 break
 
-    return photo_matrix
+    return photo_matrix, photo_dict
 
 
-# TODO
-def generate_photo_vector(anon_photo_path, height, width):
+def generate_photo_vector(photo_path, height, width):
     photo_area = height * width
-    photo = plt.imread(anon_photo_path) / 255.0
+    photo = plt.imread(photo_path)
     return np.reshape(photo, [1, photo_area])
+
+
+def generate_face(vector, height, width, path):
+    face = vector.reshape(height, width)
+    plt.imsave(path, face, cmap='gray')
