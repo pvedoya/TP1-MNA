@@ -1,29 +1,8 @@
 from os import listdir
 from os.path import join, isdir
 import numpy as np
-import matplotlib.pyplot as plt
 from utils import change_base
-from utils import eigenvectors
-from utils import qr_householder
-
-
-m = [[1,0,0,2,1,2],[12,0,3,2,4,2],[31,4,0,42,21,2],[61,50,0,32,1,12],[1,50,30,2,11,32],[15,1,0,25,13,24]]
-
-# [eigvals, eigvecs] = np.linalg.eig(m)
-
-# print(eigvecs)
-
-# [aux1,aux2] = eigenvectors(m)
-
-# print(aux2)
-
-[Q, R] = np.linalg.qr(m)
-print(Q, "\n\n\n", R)
-print("\n\n\n\n")
-
-[Q, R] = qr_householder(m)
-print(Q, "\n\n\n", R)
-
+from utils import eig
 
 
 def PCA(images, height, width):
@@ -89,7 +68,7 @@ def PCA(images, height, width):
     # U, S, V = np.linalg.svd(images, full_matrices=False)   # esto es para comparar errores
 
     C_reduced = (1 / (len(images) - 1)) * (np.dot(images, np.transpose(images)))
-    [eigvals, eigvecs] = eigenvectors(C_reduced)
+    [eigvals, eigvecs] = eig(C_reduced)
 
     C_eigvecs = np.dot(np.transpose(images), eigvecs)
 

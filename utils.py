@@ -3,7 +3,7 @@ from os import listdir
 from os.path import join, isdir
 import matplotlib.pyplot as plt
 
-ERROR = 0.0001    # TODO:define a proper value for the error
+ITERATIONS = 10000
 
 
 def change_base(image, eigvecs, mean_image):
@@ -33,31 +33,24 @@ def qr_householder(A):
         I[j:, j:] -= 2.0 * np.outer(aux, aux)
         R = np.dot(I, R)
         Q = np.dot(I, Q)
+
     return np.transpose(Q), R
 
 
-def eigenvectors(A):
-    i = 0
-    aux_eig_val = np.diag(A)  # aproximación inicial de autovalores
-    q, r = qr_householder(A)
-    eig_vec = q
-    a = np.matmul(r, q)
-    eig_val = np.diag(a)
+# https://stackoverflow.com/questions/39849941/writing-a-householder-qr-factorization-function-in-r-code
+def eig(A):
+    [Q, R] = qr_householder(A)
+    X = R @ Q
+    eigval = np.diag(X)
+    eigvec = Q
 
-    while i < 50:
-        q, r = qr_householder(a)
-        a = np.matmul(r, q)
-        eig_vec = np.matmul(eig_vec, q)
-        aux_eig_val = eig_val
-        eig_val = np.diag(a)
-        if np.linalg.norm(np.subtract(eig_val, aux_eig_val)) < ERROR:
-            break
-        i = i + 1
+    for i in range(ITERATIONS):
+        [Q, R] = qr_householder(X)
+        X = R @ Q
+        eigvec = eigvec @ Q
+        eigval = np.diag(X)
 
-    sorting = np.argsort(eig_val)[::-1]
-    eig_val = eig_val[sorting]
-    eig_vec = eig_vec[sorting]
-    return eig_val, eig_vec
+    return eigval, eigvec
 
 
 def find_closest_match(vector, matrix):
