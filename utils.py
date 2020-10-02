@@ -51,4 +51,4 @@ def generate_photo_vector(photo_path, height, width):
 
 def generate_face(vector, height, width, path):
     face = vector.reshape(height, width)
-    plt.imsave(path, np.rot90(face, axes=(1, 0)), cmap='gray', format='png')
+    plt.imsave(path, face, cmap='gray')

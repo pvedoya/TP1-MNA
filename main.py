@@ -33,6 +33,7 @@ people_amount = int(args.people)
 per_person_amount = int(args.amount)
 
 photo_matrix = generate_photo_matrix(photo_set_path, photo_height, photo_width, people_amount, per_person_amount)
+photos_og = np.copy(photo_matrix)
 anon_vector = generate_photo_vector(anon_photo_path, photo_height, photo_width)
 
 if is_kpca:
@@ -53,5 +54,5 @@ if match_percentage > threshold:
 else:
     print(f'Match found with {match_percentage} distance.')
     print(f'Photo Number ID: {row}')
-    # original_photo = photo_matrix[row]
-    # generate_face(np.reshape(original_photo, [len(original_photo), 1]), photo_height, photo_width, './lenia.png')
+    original_photo = photos_og[row]
+    generate_face(np.reshape(original_photo, [1, len(original_photo)]), photo_height, photo_width, './match.png')
