@@ -3,7 +3,7 @@ from os import listdir
 from os.path import join, isdir
 import matplotlib.pyplot as plt
 
-ITERATIONS = 10000
+ITERATIONS = 100
 
 
 def change_base(image, eigvecs, mean_image):
