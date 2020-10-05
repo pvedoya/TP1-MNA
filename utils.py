@@ -75,8 +75,15 @@ def generate_photo_matrix(photo_set_path, height, width, people_amount, per_pers
 
     photo_dict = {}
     img_num = 0
+    times = 0
     for person in dirs:
+        if (person == '1'):
+            print(f'Photos of {person} person:')
+            times = per_person_amount
         for photo in listdir(photo_set_path + '/' + person):
+            if (times > 0):
+                print(photo)
+                times -= 1
             photo_path = photo_set_path + '/' + person + '/' + photo
             photo_matrix[img_num, :] = generate_photo_vector(photo_path, height, width)
             photo_dict[img_num] = photo_path
