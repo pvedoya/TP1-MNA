@@ -25,6 +25,9 @@ eigenvector_amount = config.getint('RESULTS_DATA', 'EIGENVECTORS')
 anon_photo_path = config.get('RESULTS_DATA', 'PHOTO')
 threshold = config.getfloat('RESULTS_DATA', 'THRESHOLD')
 
+print(f'Using database of {per_person_amount} photos of each {people_amount} people')
+print(f'Analizing photo \'{anon_photo_path}\'')
+
 photo_matrix, photo_dict = generate_photo_matrix(photo_set_path, photo_height, photo_width, people_amount,
                                                  per_person_amount)
 photos_og = np.copy(photo_matrix)
@@ -44,7 +47,7 @@ closestVector, row, match_percentage = find_closest_match(anonWeight, weights)
 if match_percentage > threshold:
     print(f'No match found. Photo had match distance of {match_percentage}, '
           f'higher than threshold of {threshold}')
-    print(f'Closest match: {row}, distance: {match_percentage}')
+    print(f'Closest match: {photo_dict[row]}, distance: {match_percentage}')
 else:
     print(f'Match found with {match_percentage} distance.')
     print(f'Photo Match Path: {photo_dict[row]}')
