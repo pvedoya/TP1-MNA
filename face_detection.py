@@ -2,7 +2,6 @@ import cv2
 from PIL import Image
 from resizeimage import resizeimage
 import numpy as np
-
 img_height = 112
 img_width = 92
 color = (0, 255, 0)  # BGR => green
@@ -55,8 +54,6 @@ def face_recognition(name='default', path='./', pictures=1):
             cv2.rectangle(frame, (x, y), (x+w, y+h), color, thickness)
             face_data = [x, y, w, h]
 
-        # Display the resulting frame
-        cv2.imshow('Video', frame)
 
         # if cv2.waitKey(1) & 0xFF == ord('q'):
         #     break
@@ -68,6 +65,8 @@ def face_recognition(name='default', path='./', pictures=1):
             amount_of_pictures += 1
             if amount_of_pictures == pictures:
                 break
+        # Display the resulting frame
+        cv2.imshow('Video', frame)
     # When everything is done, release the capture
     video_capture.release()
     cv2.destroyAllWindows()
