@@ -17,13 +17,10 @@ def KPCA(images, anon, eigenvectors, degree):
     # Eigenvalues and eigenvectors
     eigenvals, eigenvec = eig(K)
 
-    # Reorder eigenvalues
-    # lambdas = np.flipud(lambdas)
-    # alpha = np.fliplr(alpha)
+    # TODO Reorder eigenvalues
 
     for col in range(eigenvec.shape[1]):
-        eigenvec[:, col] = eigenvec[:, col] / eigenvals[col] # / np.sqrt(abs(eigenvals[col]))
-        # why divide?
+        eigenvec[:, col] = eigenvec[:, col] / eigenvals[col]
 
     # Projection
     images_projection = np.dot(K.T, eigenvec)
@@ -34,31 +31,3 @@ def KPCA(images, anon, eigenvectors, degree):
 
     # Reduced projeccion
     return images_projection[:, 0:eigenvectors], anon_projection[:, 0:eigenvectors]
-
-
-    # return proyec
-
-    # svm
-
-    # nmax = alpha.shape[1]
-    # nmax = 100
-    # accs = np.zeros([nmax, 1])
-    # for neigen in range(1, nmax):
-    #     # Me quedo sólo con las primeras autocaras
-    #     # proyecto
-    #     improy = improypre[:, 0:neigen]
-    #     imtstproy = imtstproypre[:, 0:neigen]
-
-    #     # SVM
-    #     # entreno
-    #     clf = svm.LinearSVC()
-    #     clf.fit(improy, person.ravel())
-    #     accs[neigen] = clf.score(imtstproy, persontst.ravel())
-    #     print('Precisión con {0} autocaras: {1} %\n'.format(neigen, accs[neigen] * 100))
-
-    # fig, axes = plt.subplots(1, 1)
-    # axes.semilogy(range(nmax), (1 - accs) * 100)
-    # axes.set_xlabel('No. autocaras')
-    # axes.grid(which='Both')
-    # fig.suptitle('Error')
-    # fig.show()
