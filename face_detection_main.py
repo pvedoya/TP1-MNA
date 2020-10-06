@@ -2,6 +2,16 @@ import cv2
 from PIL import Image
 from resizeimage import resizeimage
 import numpy as np
+import faulthandler; faulthandler.enable()
+
+from PCA import PCA
+from utils import change_base
+from utils import find_closest_match
+from utils import generate_photo_matrix
+from utils import generate_photo_vector
+from utils import generate_face
+from utils import calculate_match_percentages
+from KPCA import calculate_kpca as KPCA
 
 img_height = 112
 img_width = 92
@@ -20,6 +30,7 @@ def face_recognition(name='default', path='./', pictures=1):
     faceCascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
     video_capture = cv2.VideoCapture(0)
+    gray_array = []
 
     if video_capture is None or not video_capture.isOpened():
         raise Exception('Missing webcam')
@@ -60,11 +71,14 @@ def face_recognition(name='default', path='./', pictures=1):
 
         # if cv2.waitKey(1) & 0xFF == ord('q'):
         #     break
-        if cv2.waitKey(1) & 0xFF == ord('s'):
+        # print('no pasa nada malo antes de tocar s')
+        key = cv2.waitKey(1)
+        ord_s = ord('s')
+        print(key)
+        if key == ord_s:
+            # print('se muere cuando aprieto la s')
             face_gray = get_gray_img(frame_gray, face_data)
-            face_gray = get_gray_img(frame_gray, face_data)
-            face_gray.save(
-                f'{path}/{name}_{amount_of_pictures+1}.pgm', face_gray.format)
+            face_gray.save(f"{path}/{name}_{amount_of_pictures+1}.pgm", face_gray.format)
             amount_of_pictures += 1
             if amount_of_pictures == pictures:
                 break
@@ -73,6 +87,36 @@ def face_recognition(name='default', path='./', pictures=1):
     cv2.destroyAllWindows()
     return np.array(face_gray)
 
+
 # face_recognition(name = 'santi', path='./att_faces/santi', pictures=10) # use this to take the training pictures
 # use this to take the to_match picture
-# face_recognition(name='santi', pictures=1)
+img = face_recognition(name='santi', pictures=1)
+
+# print(img.shape)
+# photo_height = 112
+# photo_width = 92
+# people_amount = 41
+# per_person_amount = 4
+
+# eigenvector_amount = 90
+# photo_set_path = './att_faces'
+# threshold = 77
+ 
+# photo_matrix, photo_dict, people_groups, people_dict = generate_photo_matrix(photo_set_path, photo_height, photo_width, people_amount,
+#                                                  per_person_amount)
+# anon_vector = np.reshape(img, [1, photo_height*photo_width])
+# eigenvectors, weights, mean_photo = PCA(photo_matrix)
+
+# # Calculates weights array of anonymous photo in relation to eigenvectors
+# anon_weight = change_base(np.reshape(anon_vector, [len(anon_vector[0]), 1]), eigenvectors,
+#                          np.reshape(mean_photo, [len(mean_photo[0]), 1]))
+# anon_weight = np.reshape(anon_weight, [1, len(anon_weight)])
+
+# # Returns array of match percentages for each person
+# match_percentages = calculate_match_percentages(weights, people_groups, anon_weight)
+# sorted_indexes = np.argsort(match_percentages)
+
+# print('Match percentages:')
+# for idx in sorted_indexes:
+#     percentage = match_percentages[idx]
+#     print(f'Person: {people_dict[idx+1]} - match: {match_percentages[idx]*100}%')
