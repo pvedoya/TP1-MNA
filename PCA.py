@@ -7,7 +7,7 @@ from utils import eig
 DEC = 5
 
 
-def PCA(images):
+def PCA(images, anon_vector, eigenvector_amount):
 
     # Mean Face
     mean_image = np.mean(images, 0)
@@ -50,4 +50,7 @@ def PCA(images):
     # Weights of photo matrix on base of covariance eigenvectors
     W = change_base(np.transpose(images_og), C_eigvecs, mean_image)
 
-    return [C_eigvecs, np.transpose(W), np.reshape(mean_image, [1, len(mean_image)])]
+    # Weights of anonymous photo
+    anon_weight = change_base(np.reshape(anon_vector, [len(anon_vector[0]), 1]), C_eigvecs, mean_image)
+
+    return np.transpose(W), np.reshape(anon_weight, [1, len(anon_weight)])
