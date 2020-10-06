@@ -1,4 +1,5 @@
 from argparse import ArgumentParser
+import configparser
 import numpy as np
 from utils import change_base
 from utils import find_closest_match
@@ -8,31 +9,27 @@ from utils import generate_face
 from KPCA import calculate_kpca as KPCA
 from PCA import PCA
 
-ap = ArgumentParser()
+# Reader of the ini file, read fnc receives the path
+config = configparser.ConfigParser()
+config.read('configuration.ini')
 
-ap.add_argument("-s", "--photoset", required=True, help="Photo set for analysis")
-ap.add_argument("-H", "--height", required=True, help="Photos height")
-ap.add_argument("-W", "--width", required=True, help="Photos width")
-ap.add_argument("-P", "--people", required=True, help="Amount of people in photo set")
-ap.add_argument("-A", "--amount", required=True, help="Amount of photos each person has")
-ap.add_argument("-e", "--eigenvectors", required=False, help="Amount of eigenvectors to use", default=90)
-ap.add_argument("-k", "--kpca", required=False, help="Calculate KPCA instead (default is PCA)", action='store_true')
-ap.add_argument("-p", "--photo", required=True, help="Path of photo to analyze")
-ap.add_argument("-t", "--threshold", required=True, help="Minimum threshold (0-100) for match", default="77")
+is_kpca = config.getboolean('SETTINGS', 'IS_KPCA')
+photo_set_path = config.get('SETTINGS', 'PHOTO_SET')
 
-args = ap.parse_args()
+photo_height = config.getint('IMAGES_DATA', 'HEIGHT')
+photo_width = config.getint('IMAGES_DATA', 'WIDTH')
+people_amount = config.getint('IMAGES_DATA', 'PEOPLE_PER_SET')
+per_person_amount = config.getint('IMAGES_DATA', 'IMG_PER_PERSON')
 
-eigenvector_amount = int(args.eigenvectors)
-is_kpca = args.kpca
-photo_set_path = args.photoset
-anon_photo_path = args.photo
-threshold = float(args.threshold)
-photo_height = int(args.height)
-photo_width = int(args.width)
-people_amount = int(args.people)
-per_person_amount = int(args.amount)
+eigenvector_amount = config.getint('RESULTS_DATA', 'EIGENVECTORS')
+anon_photo_path = config.get('RESULTS_DATA', 'PHOTO')
+threshold = config.getfloat('RESULTS_DATA', 'THRESHOLD')
 
-photo_matrix = generate_photo_matrix(photo_set_path, photo_height, photo_width, people_amount, per_person_amount)
+print(f'Using database of {per_person_amount} photos of each {people_amount} people')
+print(f'Analizing photo \'{anon_photo_path}\'')
+
+photo_matrix, photo_dict = generate_photo_matrix(photo_set_path, photo_height, photo_width, people_amount,
+                                                 per_person_amount)
 photos_og = np.copy(photo_matrix)
 anon_vector = generate_photo_vector(anon_photo_path, photo_height, photo_width)
 
@@ -50,9 +47,7 @@ closestVector, row, match_percentage = find_closest_match(anonWeight, weights)
 if match_percentage > threshold:
     print(f'No match found. Photo had match distance of {match_percentage}, '
           f'higher than threshold of {threshold}')
-    print(f'Closest match: {row}, distance: {match_percentage}')
+    print(f'Closest match: {photo_dict[row]}, distance: {match_percentage}')
 else:
     print(f'Match found with {match_percentage} distance.')
-    print(f'Photo Number ID: {row}')
-    original_photo = photos_og[row]
-    generate_face(np.reshape(original_photo, [1, len(original_photo)]), photo_height, photo_width, './match.png')
+    print(f'Photo Match Path: {photo_dict[row]}')

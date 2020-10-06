@@ -1,8 +1,8 @@
 from os import listdir
 from os.path import join, isdir
 import numpy as np
-import matplotlib.pyplot as plt
 from utils import change_base
+from utils import eig
 
 DEC = 5
 
@@ -21,8 +21,8 @@ def PCA(images):
 
     # Reduced Covariance Matrix
     C_reduced = (1 / (len(images) - 1)) * (np.dot(images, np.transpose(images)))
-
-    [eigvals, eigvecs] = np.linalg.eig(C_reduced)
+    [eigvals, eigvecs] = eig(C_reduced)
+    # [eigvals, eigvecs] = np.linalg.eig(C_reduced)
 
     # Round eigenvectors and eigenvalues to DEC decimals, so as to have well defined 0s
     eigvals = np.round(eigvals, decimals=DEC)
