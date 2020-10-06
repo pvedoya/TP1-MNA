@@ -7,7 +7,7 @@ from utils import generate_photo_matrix
 from utils import generate_photo_vector
 from utils import generate_face
 from utils import calculate_match_percentages
-from KPCA import calculate_kpca as KPCA
+from KPCA import KPCA
 from PCA import PCA
 
 # Reader of the ini file, read fnc receives the path
@@ -15,6 +15,7 @@ config = configparser.ConfigParser()
 config.read('configuration.ini')
 
 is_kpca = config.getboolean('SETTINGS', 'IS_KPCA')
+kpca_degree = config.getint('SETTINGS', 'KPCA_DEGREE')
 photo_set_path = config.get('SETTINGS', 'PHOTO_SET')
 
 photo_height = config.getint('IMAGES_DATA', 'HEIGHT')
@@ -37,14 +38,9 @@ photo_matrix, photo_dict, people_groups, people_dict = generate_photo_matrix(pho
 anon_vector = generate_photo_vector(anon_photo_path, photo_height, photo_width)
 
 if is_kpca:
-    eigenvectors, weights, mean_photo = KPCA(photo_matrix)  # TODO
+    weights, anon_weight = KPCA(photo_matrix, anon_vector, eigenvector_amount, kpca_degree)
 else:
-    eigenvectors, weights, mean_photo = PCA(photo_matrix)
-
-# Calculates weights array of anonymous photo in relation to eigenvectors
-anon_weight = change_base(np.reshape(anon_vector, [len(anon_vector[0]), 1]), eigenvectors,
-                         np.reshape(mean_photo, [len(mean_photo[0]), 1]))
-anon_weight = np.reshape(anon_weight, [1, len(anon_weight)])
+    weights, anon_weight = PCA(photo_matrix, anon_vector, eigenvector_amount)
 
 # Returns array of match percentages for each person
 match_percentages = calculate_match_percentages(weights, people_groups, anon_weight)
