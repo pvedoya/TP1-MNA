@@ -6,6 +6,7 @@ from utils import find_closest_match
 from utils import generate_photo_matrix
 from utils import generate_photo_vector
 from utils import generate_face
+from utils import calculate_match_percentages
 from KPCA import calculate_kpca as KPCA
 from PCA import PCA
 
@@ -25,29 +26,31 @@ eigenvector_amount = config.getint('RESULTS_DATA', 'EIGENVECTORS')
 anon_photo_path = config.get('RESULTS_DATA', 'PHOTO')
 threshold = config.getfloat('RESULTS_DATA', 'THRESHOLD')
 
-print(f'Using database of {per_person_amount} photos of each {people_amount} people')
-print(f'Analizing photo \'{anon_photo_path}\'')
-
-photo_matrix, photo_dict = generate_photo_matrix(photo_set_path, photo_height, photo_width, people_amount,
+# Creates matrix of shape (n_photos, n_measurements),
+# dictionary of photo_row -> photo_path,
+# array that matches each photo to a person id
+# and dictionary of person_id -> person_name
+photo_matrix, photo_dict, people_groups, people_dict = generate_photo_matrix(photo_set_path, photo_height, photo_width, people_amount,
                                                  per_person_amount)
-photos_og = np.copy(photo_matrix)
+
+# Creates array of anonymous photo to analize
 anon_vector = generate_photo_vector(anon_photo_path, photo_height, photo_width)
 
 if is_kpca:
-    eigenvectors, weights, meanPhoto = KPCA(photo_matrix)  # TODO
+    eigenvectors, weights, mean_photo = KPCA(photo_matrix)  # TODO
 else:
-    eigenvectors, weights, meanPhoto = PCA(photo_matrix)
+    eigenvectors, weights, mean_photo = PCA(photo_matrix)
 
-anonWeight = change_base(np.reshape(anon_vector, [len(anon_vector[0]), 1]), eigenvectors,
-                         np.reshape(meanPhoto, [len(meanPhoto[0]), 1]))
-anonWeight = np.reshape(anonWeight, [1, len(anonWeight)])
+# Calculates weights array of anonymous photo in relation to eigenvectors
+anon_weight = change_base(np.reshape(anon_vector, [len(anon_vector[0]), 1]), eigenvectors,
+                         np.reshape(mean_photo, [len(mean_photo[0]), 1]))
+anon_weight = np.reshape(anon_weight, [1, len(anon_weight)])
 
-closestVector, row, match_percentage = find_closest_match(anonWeight, weights)
+# Returns array of match percentages for each person
+match_percentages = calculate_match_percentages(weights, people_groups, anon_weight)
+sorted_indexes = np.argsort(match_percentages)
 
-if match_percentage > threshold:
-    print(f'No match found. Photo had match distance of {match_percentage}, '
-          f'higher than threshold of {threshold}')
-    print(f'Closest match: {photo_dict[row]}, distance: {match_percentage}')
-else:
-    print(f'Match found with {match_percentage} distance.')
-    print(f'Photo Match Path: {photo_dict[row]}')
+print('Match percentages:')
+for idx in sorted_indexes:
+    percentage = match_percentages[idx]
+    print(f'Person: {people_dict[idx+1]} - match: {match_percentages[idx]*100}%')
