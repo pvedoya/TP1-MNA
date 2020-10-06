@@ -3,9 +3,10 @@ from os import listdir
 from os.path import join, isdir
 from typing import Tuple
 import matplotlib.pyplot as plt
+from sklearn import svm
 from numpy import linalg
 
-ITERATIONS = 100
+ITERATIONS = 50
 
 
 def change_base(image, eigvecs, mean_image):
@@ -56,16 +57,16 @@ def eig(A):
 
 
 def find_closest_match(vector, matrix):
-    matchPercentages = np.zeros(len(matrix))
+    match_percentages = np.zeros(len(matrix))
     i = 0
     for v in matrix:
-        matchPercentages[i] = np.linalg.norm(v - vector)
+        match_percentages[i] = np.linalg.norm(v - vector)
         i += 1
 
-    minDistance = np.amin(matchPercentages)
-    matchPosition = np.where(matchPercentages == minDistance)[0][0]
+    min_distance = np.amin(match_percentages)
+    match_position = np.where(match_percentages == min_distance)[0][0]
 
-    return matrix[matchPosition], matchPosition, minDistance
+    return matrix[match_position], match_position, min_distance
 
 
 def generate_photo_matrix(photo_set_path, height, width, people_amount, per_person_amount):
@@ -77,24 +78,24 @@ def generate_photo_matrix(photo_set_path, height, width, people_amount, per_pers
     photo_matrix = np.zeros([people_area, photo_area])
 
     photo_dict = {}
+    people_dict = {}
+    people_groups = np.zeros(people_area)
+    person_num = 1
     img_num = 0
-    times = 0
     for person in dirs:
-        if (person == '1'):
-            print(f'Photos of {person} person:')
-            times = per_person_amount
+        people_dict[person_num] = person
         for photo in listdir(photo_set_path + '/' + person):
-            if (times > 0):
-                print(photo)
-                times -= 1
             photo_path = photo_set_path + '/' + person + '/' + photo
             photo_matrix[img_num, :] = generate_photo_vector(photo_path, height, width)
             photo_dict[img_num] = photo_path
+            people_groups[img_num] = person_num
+
             img_num += 1
             if img_num % per_person_amount == 0:
                 break
+        person_num += 1
 
-    return photo_matrix, photo_dict
+    return photo_matrix, photo_dict, people_groups, people_dict
 
 
 def generate_photo_vector(photo_path, height, width):
@@ -106,6 +107,20 @@ def generate_photo_vector(photo_path, height, width):
 def generate_face(vector, height, width, path):
     face = vector.reshape(height, width)
     plt.imsave(path, face, cmap='gray')
+    return
+
+
+def calculate_match_percentages(values_matrix, groups, test):
+    svc = svm.LinearSVC()
+    svc.fit(values_matrix, groups)
+    distinct_groups_len = len(list(dict.fromkeys(groups)))
+    distinct_groups = list(range(1, distinct_groups_len+1))
+    percentages = np.zeros(len(distinct_groups))
+    i = 0
+    for group in distinct_groups:
+        percentages[i] = svc.score(test, [group])
+        i += 1
+    return percentages
 
 
 def power_method(A: np.ndarray, x: np.ndarray = 'none', tolerance: float = 1e-10) -> Tuple[float, np.ndarray]:
@@ -142,4 +157,3 @@ def power_method(A: np.ndarray, x: np.ndarray = 'none', tolerance: float = 1e-10
 # def inv_power_method(A: np.ndarray, x: np.ndarray = 'none', tolerance: float = 1e-10) -> Tuple[float, np.ndarray]:
 #     _w, v = power_method(np.linalg.inv(A), x, tolerance)
 #     return rayleigh(A, v), v
-
