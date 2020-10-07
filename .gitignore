@@ -1,7 +1,7 @@
 .venv
 .idea
 venv
-tutorial-envr
+tutorial-env
 # Compiled class file
 *.class
 *.pyc
