@@ -2,9 +2,6 @@ import cv2
 from PIL import Image
 from resizeimage import resizeimage
 import numpy as np
-import configparser
-
-
 
 
 def get_gray_img(frame, data, is_square, img_width, img_height):
@@ -15,7 +12,6 @@ def get_gray_img(frame, data, is_square, img_width, img_height):
     else:
         width_scaled_img = resizeimage.resize_width(img, img_width)
         return resizeimage.resize_crop(width_scaled_img, [img_width, img_height])
-
 
 
 def resize_face_rectangle(face_data, img_width, img_height):
@@ -35,15 +31,11 @@ def resize_face_rectangle(face_data, img_width, img_height):
     return x, y, w, h
 
 
-def face_recognition(name='default', path='./', pictures=1):
+def face_recognition(img_width=64, img_height=64, name='default', path='./', pictures=1):
 
-    config = configparser.ConfigParser()
-    config.read('configuration.ini')
-    img_height = config.getint('IMAGES_DATA', 'HEIGHT')
-    img_width = config.getint('IMAGES_DATA', 'WIDTH')
     color = (0, 255, 0)  # BGR => green
     thickness = 2
-
+    sensitivity = 128
     is_square_ratio = img_height == img_width
 
     faceCascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
@@ -67,7 +59,7 @@ def face_recognition(name='default', path='./', pictures=1):
             frame_gray,
             scaleFactor=1.1,
             # higher number => less sensitive. Big number good for only one face.
-            minSize=(int(img_width*2), int(img_height*2))
+            minSize=(sensitivity, sensitivity)
         )
 
         # Draw a rectangle around the faces
@@ -78,15 +70,18 @@ def face_recognition(name='default', path='./', pictures=1):
             # resize for larger desired ratio
             face_data = [x, y, w, h]
             if not is_square_ratio:
-                x, y, w, h = resize_face_rectangle(face_data, img_width, img_height)
+                x, y, w, h = resize_face_rectangle(
+                    face_data, img_width, img_height)
 
             cv2.rectangle(frame, (x, y), (x+w, y+h), color, thickness)
             face_data = [x, y, w, h]
 
         if cv2.waitKey(1) & 0xFF == ord('s') and face_data is not None:
-            face_gray = get_gray_img(frame_gray, face_data, is_square_ratio, img_width, img_height)
-            face_gray.save(
-                f'{path}/{name}_{amount_of_pictures+1}.pgm', face_gray.format)
+            face_gray = get_gray_img(
+                frame_gray, face_data, is_square_ratio, img_width, img_height)
+            img_name = f'{path}/{name}_{amount_of_pictures+1}.pgm'
+            face_gray.save(img_name, face_gray.format)
+            print(f'saved image {name}_{amount_of_pictures+1}.pgm')
             amount_of_pictures += 1
             if amount_of_pictures == pictures:
                 break
