@@ -22,7 +22,6 @@ def PCA(images, anon_vector, eigenvector_amount):
     # Reduced Covariance Matrix
     C_reduced = (1 / (len(images) - 1)) * (np.dot(images, np.transpose(images)))
     [eigvals, eigvecs] = eig(C_reduced)
-    # [eigvals, eigvecs] = np.linalg.eig(C_reduced)
 
     # Round eigenvectors and eigenvalues to DEC decimals, so as to have well defined 0s
     eigvals = np.round(eigvals, decimals=DEC)

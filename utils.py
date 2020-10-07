@@ -42,6 +42,7 @@ def qr_householder(A):
 
 # https://stackoverflow.com/questions/39849941/writing-a-householder-qr-factorization-function-in-r-code
 def eig(A):
+    # return np.linalg.eig(A)
     [Q, R] = qr_householder(A)
     X = R @ Q
     eigval = np.diag(X)
