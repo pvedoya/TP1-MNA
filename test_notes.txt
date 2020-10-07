@@ -1,0 +1,183 @@
+KPCA, 90 EIGS, 10 PICTURES, NUMPY EIG             
+
+pelo en la cara, fondo diferente:
+  test 1:
+    Person: santi        33.69% | SVM: santi
+    Person: s22          22.17% | 
+    Person: s33          21.46% | 
+    Person: s39          20.02% | 
+    Person: s6           19.60% | 
+    Person: s30          16.90% |
+  test 2:
+    Person: sofi         34.06% | SVM: sofi
+    Person: s22          31.09% | 
+    Person: s29          28.82% | 
+    Person: santi        25.82% | 
+    Person: s30          22.54% | 
+  test 3:
+    Person: sofi         34.35% | SVM: sofi
+    Person: s22          30.66% | 
+    Person: s29          25.51% | 
+    Person: s30          23.88% | 
+    Person: santi        23.72% | 
+
+---------------------------------------------------------------
+
+KPCA, 90 EIGS, 10 PICTURES, PEDRO EIG
+
+pelo en la cara, fondo diferente:
+  test 1:
+    Person: s22          29.61% | SVM: santi
+    Person: santi        26.72% |
+    Person: s29          26.58% |
+    Person: sofi         23.68% |
+    Person: s30          21.07% |
+  test 2:
+    Person: santi        33.28% | SVM: santi
+    Person: s22          31.45% |
+    Person: s29          29.52% |
+    Person: sofi         23.39% |
+    Person: s30          18.50% |
+pelo atado, fondo diferente:
+  test1:
+    Person: s22          29.35% | SVM: santi
+    Person: santi        28.33% | 
+    Person: s29          27.57% | 
+    Person: s30          26.53% | 
+    Person: lu           23.68% | 
+  
+---------------------------------------------------------------
+
+KPCA, 90 EIGS, 10 PICTURES, PEDRO EIG
+
+pelo en la cara, fondo blanco:
+  test1:
+    Person: santi        30.97% | SVM: santi
+    Person: s22          30.49% |
+    Person: sofi         27.00% |
+    Person: s29          24.76% |
+    Person: s33          20.54% |
+pelo atado, fondo blanco:
+  test1:
+    Person: santi        44.65% | SVM: santi
+    Person: s22          30.89% | 
+    Person: s29          27.37% | 
+    Person: s33          22.42% | 
+    Person: s39          21.04% | 
+foto lo mas parecida posible a la original:
+  test1:
+    Person: santi        29.01% | SVM: santi
+    Person: s29          28.50% | 
+    Person: s22          28.33% | 
+    Person: sofi         21.66% | 
+    Person: s9           19.88% | 
+
+---------------------------------------------------------------
+
+KPCA, 90 EIGS, 4 PICTURES, PEDRO EIG
+
+pelo en la cara, fondo blanco:
+  test1:
+    Person: santi        37.96% | SVM: santi
+    Person: s29          31.91% | 
+    Person: s22          26.43% | 
+    Person: sofi         19.23% | 
+    Person: s6           18.24% | 
+pelo atado, fondo blanco:
+  test1:
+    Person: s29          36.82% | SVM: santi
+    Person: santi        34.09% | 
+    Person: s33          31.70% | 
+    Person: s22          23.25% | 
+    Person: s6           20.71% | 
+foto lo mas parecida posible a la original:
+  test1:
+    Person: santi        37.96% | SVM: santi
+    Person: s29          31.91% | 
+    Person: s22          26.43% | 
+    Person: sofi         19.23% | 
+    Person: s6           18.24% | 
+
+---------------------------------------------------------------
+
+PCA, 10 PICTURES, PEDRO EIG
+
+pelo atado, fondo diferente
+  test1:
+    Person: sofi         79.56% | SVM: santi
+    Person: lu           74.66% | 
+    Person: santi        70.11% | 
+    Person: s1           47.45% | 
+    Person: s25          47.21% | 
+  test2 (mas de cerca):
+    Person: sofi         77.72% | SVM: lu 
+    Person: lu           71.11% | 
+    Person: santi        67.74% | 
+    Person: pedro        42.36% | 
+    Person: s5           40.18% |
+pelo en la cara, fondo diferente
+  test1:
+    Person: sofi         80.07% | SVM: santi
+    Person: santi        68.72% |  
+    Person: lu           68.42% | 
+    Person: s5           60.96% |  
+    Person: s1           58.87% |  
+pelo en la cara, fondo blanco
+  test1:
+    Person: santi        89.70% | SVM: santi
+    Person: sofi         76.57% | 
+    Person: lu           71.11% | 
+    Person: pedro        65.84% | 
+    Person: s1           59.80% | 
+
+---------------------------------------------------------------
+
+PCA, 4 PICTURES, PEDRO EIG
+
+pelo atado, fondo diferente
+  test1:
+    Person: sofi         85.41% | SVM: santi
+    Person: lu           70.75% | 
+    Person: santi        68.66% | 
+    Person: s1           50.52% | 
+    Person: s5           45.97% |  
+  test2 (mas de cerca):
+    Person: sofi         85.88% | SVM: sofi
+    Person: santi        70.20% | 
+    Person: lu           68.63% | 
+    Person: s1           53.86% | 
+    Person: pedro        44.16% | 
+pelo en la cara, fondo diferente
+  test1:
+    Person: sofi         80.07% | SVM: santi
+    Person: santi        68.72% |  
+    Person: lu           68.42% | 
+    Person: s5           60.96% |  
+    Person: s1           58.87% |  
+pelo en la cara, fondo blanco
+  test1:
+    Person: santi        94.04% | SVM: santi
+    Person: pedro        72.24% | 
+    Person: sofi         71.08% | 
+    Person: lu           69.92% | 
+    Person: s1           60.41% | 
+pelo atado, fondo blanco
+  test1:
+    Person: santi        86.45% | SVM: santi
+    Person: pedro        71.14% | 
+    Person: lu           68.12% | 
+    Person: sofi         60.14% | 
+    Person: s8           55.52% | 
+lenia:
+  test1:
+    Person: pedro        62.88% | SVM: lu
+    Person: s36          47.05% |
+    Person: s17          45.96% |
+    Person: s10          45.31% |
+    Person: santi        41.11% |
+  test2 (mas de lejos):
+    Person: pedro        64.36% | SVM: pedro
+    Person: s17          44.13% | 
+    Person: s36          43.39% | 
+    Person: s10          43.13% | 
+    Person: santi        41.72% | 
