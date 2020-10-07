@@ -38,7 +38,7 @@ photo_matrix, photo_dict, people_groups, people_dict = generate_photo_matrix(pho
 # Creates array of anonymous photo to analize
 if is_video:
     print('Opening webcam viewer...')
-    gray_array = face_recognition(name='person', pictures=1)
+    gray_array = face_recognition(photo_width, photo_height, name='person', pictures=1)
     print('Face captured. Running facial recognition...')
     anon_vector = np.reshape(gray_array, [1, photo_height*photo_width])
 else:
