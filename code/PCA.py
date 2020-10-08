@@ -1,5 +1,3 @@
-from os import listdir
-from os.path import join, isdir
 import numpy as np
 from utils import change_base
 from utils import eig

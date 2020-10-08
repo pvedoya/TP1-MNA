@@ -42,6 +42,7 @@ def get_confidence(v, confidence):
             to_return = emojis[key]
     return to_return
 
+
 # Reader of the ini file, read fnc receives the path
 config = configparser.ConfigParser()
 config.read('configuration.ini')

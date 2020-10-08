@@ -10,7 +10,7 @@ img_width = config.getint('IMAGES_DATA', 'WIDTH')
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-n', '--name', help='Name of the person taking the pictures', required=True)
-parser.add_argument('-d', '--dir', help='Path of the dataset directory', required=False, default='./att_faces/')
+parser.add_argument('-d', '--dir', help='Path of the dataset directory', required=False, default='./photos/att_faces/')
 parser.add_argument('-p', '--pictures', help='Amount of pictures to be taken', required=False, default=10)
 parser.add_argument('-iw', '--width', help='Desired image width', required=False, default=img_width)
 parser.add_argument('-ih', '--height', help='Desired image height', required=False, default=img_height)
