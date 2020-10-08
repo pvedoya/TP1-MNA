@@ -11,34 +11,35 @@ import emoji
 # import warnings
 # warnings.filterwarnings("ignore")
 
-def get_confidence_rage(v):
-    emojis = {
-        'sob': emoji.emojize(':sob:', use_aliases=True),
-        'sad': emoji.emojize(':worried:', use_aliases=True),
-        'normal': emoji.emojize(':neutral_face:', use_aliases=True),
-        'happy': emoji.emojize(':smiling_face_with_smiling_eyes:', use_aliases=True),
-        'very happy': emoji.emojize(':smile:', use_aliases=True)
+confidence_kpca = {
+        'very high': [65, 101],
+        'high': [40, 65],
+        'moderate': [25, 40],
+        'low': [10, 25],
+        'very low': [-1, 10]
     }
-    
-    to_return = emojis['sob']
-    if is_kpca:
-        if v >= 40:
-            to_return = emojis['happy'] + " (High)"
-        elif v >= 25 and v < 40:
-            to_return = emojis['normal'] + " (Moderate)"
-        else:
-            to_return = emojis['sob'] + " (Low)"
-    else:
-        if v >= 85:
-            to_return = emojis['very happy'] + " (Very high)"
-        elif v >= 70 and v < 85:
-            to_return = emojis['happy'] + " (High)"
-        elif v >= 60 and v < 70:
-            to_return = emojis['normal'] + " (Moderate)"
-        elif v >= 50 and v < 60:
-            to_return = emojis['sad'] + " (low)"
-        else:
-            to_return = emojis['sob'] + " (Very low)"
+
+confidence_pca = {
+        'very high': [90, 101],
+        'high': [80, 90],
+        'moderate': [70, 80],
+        'low': [60, 70],
+        'very low': [-1, 60]
+    }
+
+def get_confidence(v, confidence):
+    emojis = {
+        'very low': emoji.emojize(':sob:', use_aliases=True) + " (Very low)",
+        'low': emoji.emojize(':worried:', use_aliases=True) + " (Low)",
+        'moderate': emoji.emojize(':neutral_face:', use_aliases=True) + " (Moderate)",
+        'high': emoji.emojize(':smiling_face_with_smiling_eyes:', use_aliases=True) + " (High)",
+        'very high': emoji.emojize(':smile:', use_aliases=True) + " (Very High)"
+    }
+
+    to_return = emojis['very low']
+    for key, value in confidence.items():
+        if v >= value[0] and v < value[1]:
+            to_return = emojis[key]
     return to_return
 
 # Reader of the ini file, read fnc receives the path
@@ -103,4 +104,6 @@ for g in group_id_list:
 # for k, v in sorted(match_dict.items(), key=lambda x: x[1], reverse=True):
 
 print('Match found!')
-print("%-15s %-12s" % (f"Match: {people_dict[match_id]}", f"Confidence: {get_confidence_rage(match_dict[people_dict[match_id]])}"))
+similarity = match_dict[people_dict[match_id]]
+confidence_dict = confidence_kpca if is_kpca else confidence_pca
+print("%-15s %-12s %5.2f%%" % (f"Match: {people_dict[match_id]}", f"Confidence: {get_confidence(similarity, confidence_dict)}", similarity ))
