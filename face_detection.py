@@ -35,7 +35,7 @@ def face_recognition(img_width=64, img_height=64, name='default', path='./', pic
 
     color = (0, 255, 0)  # BGR => green
     thickness = 2
-    sensitivity = 128
+    sensitivity = 180
     is_square_ratio = img_height == img_width
 
     faceCascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
