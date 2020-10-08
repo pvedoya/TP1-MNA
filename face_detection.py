@@ -31,7 +31,7 @@ def resize_face_rectangle(face_data, img_width, img_height):
     return x, y, w, h
 
 
-def face_recognition(img_width=64, img_height=64, name='default', path='./', pictures=1):
+def face_recognition(img_width=64, img_height=64, name='default', path='./', pictures=1, save_to_file =False):
 
     color = (0, 255, 0)  # BGR => green
     thickness = 2
@@ -80,8 +80,9 @@ def face_recognition(img_width=64, img_height=64, name='default', path='./', pic
             face_gray = get_gray_img(
                 frame_gray, face_data, is_square_ratio, img_width, img_height)
             img_name = f'{path}/{name}_{amount_of_pictures+1}.pgm'
-            face_gray.save(img_name, face_gray.format)
-            print(f'saved image {name}_{amount_of_pictures+1}.pgm')
+            if save_to_file:
+                face_gray.save(img_name, face_gray.format)
+                print(f'saved image {name}_{amount_of_pictures+1}.pgm')
             amount_of_pictures += 1
             if amount_of_pictures == pictures:
                 break
