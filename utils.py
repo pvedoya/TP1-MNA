@@ -78,7 +78,6 @@ def generate_photo_matrix(photo_set_path, height, width, people_amount, per_pers
             if isdir(join(photo_set_path, f))]
     photo_matrix = np.zeros([people_area, photo_area])
 
-    photo_dict = {}
     people_dict = {}
     people_groups = np.zeros(people_area)
     person_num = 1
@@ -88,7 +87,6 @@ def generate_photo_matrix(photo_set_path, height, width, people_amount, per_pers
         for photo in listdir(photo_set_path + '/' + person):
             photo_path = photo_set_path + '/' + person + '/' + photo
             photo_matrix[img_num, :] = generate_photo_vector(photo_path, height, width)
-            photo_dict[img_num] = photo_path
             people_groups[img_num] = person_num
 
             img_num += 1
@@ -96,7 +94,7 @@ def generate_photo_matrix(photo_set_path, height, width, people_amount, per_pers
                 break
         person_num += 1
 
-    return photo_matrix, photo_dict, people_groups, people_dict
+    return photo_matrix, people_groups, people_dict
 
 
 def generate_photo_vector(photo_path, height, width):
