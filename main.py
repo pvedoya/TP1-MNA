@@ -18,7 +18,8 @@ is_kpca = config.getboolean('SETTINGS', 'IS_KPCA')
 kpca_degree = config.getint('SETTINGS', 'KPCA_DEGREE')
 photo_set_path = config.get('SETTINGS', 'PHOTO_SET')
 is_video = config.getboolean('SETTINGS', 'IS_VIDEO')
-
+svm_c = config.getfloat('SETTINGS', 'SVM_C')
+svm_iter = config.getfloat('SETTINGS', 'SVM_ITER')
 
 photo_height = config.getint('IMAGES_DATA', 'HEIGHT')
 photo_width = config.getint('IMAGES_DATA', 'WIDTH')
@@ -27,7 +28,7 @@ per_person_amount = config.getint('IMAGES_DATA', 'IMG_PER_PERSON')
 
 eigenvector_amount = config.getint('RESULTS_DATA', 'EIGENVECTORS')
 anon_photo_path = config.get('RESULTS_DATA', 'PHOTO')
-threshold = config.getfloat('RESULTS_DATA', 'THRESHOLD')
+
 # Creates matrix of shape (n_photos, n_measurements),
 # dictionary of photo_row -> photo_path,
 # array that matches each photo to a person id
@@ -50,7 +51,7 @@ else:
     weights, anon_weight = PCA(photo_matrix, anon_vector, eigenvector_amount)
 
 # Returns id of matched person
-match_id = calculate_match(weights, people_groups, anon_weight)
+match_id = calculate_match(weights, people_groups, anon_weight, svm_c, svm_iter)
 group_id_list = list(map(int, dict.fromkeys(people_groups)))
 match_dict = {}
 for g in group_id_list:

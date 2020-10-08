@@ -5,6 +5,7 @@ from typing import Tuple
 import matplotlib.pyplot as plt
 from sklearn import svm
 from numpy import linalg
+from sklearn.preprocessing import StandardScaler
 
 ITERATIONS = 50
 
@@ -43,6 +44,7 @@ def qr_householder(A):
 # https://stackoverflow.com/questions/39849941/writing-a-householder-qr-factorization-function-in-r-code
 def eig(A):
     # return np.linalg.eig(A)
+    print('Calculating qr...')
     [Q, R] = qr_householder(A)
     X = R @ Q
     eigval = np.diag(X)
@@ -54,6 +56,7 @@ def eig(A):
         eigvec = eigvec @ Q
         eigval = np.diag(X)
 
+    print('qr done.')
     return eigval, eigvec
 
 
@@ -112,10 +115,13 @@ def generate_face(vector, height, width, path):
     return
 
 
-def calculate_match(values_matrix, groups, test):
-    svc = svm.LinearSVC()
+def calculate_match(values_matrix, groups, test, svm_c, svm_iter):
+    print('Calculating svm...')
+    svc = svm.LinearSVC(C=svm_c, max_iter=svm_iter)
     svc.fit(values_matrix, groups)
-    return svc.predict(test)[0]
+    match = svc.predict(test)[0]
+    print('svm done.')
+    return match
 
 
 def power_method(A: np.ndarray, x: np.ndarray = 'none', tolerance: float = 1e-10) -> Tuple[float, np.ndarray]:
