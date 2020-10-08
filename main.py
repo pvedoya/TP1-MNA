@@ -27,7 +27,7 @@ per_person_amount = config.getint('IMAGES_DATA', 'IMG_PER_PERSON')
 
 eigenvector_amount = config.getint('RESULTS_DATA', 'EIGENVECTORS')
 anon_photo_path = config.get('RESULTS_DATA', 'PHOTO')
-threshold = config.getfloat('RESULTS_DATA', 'THRESHOLD')
+
 # Creates matrix of shape (n_photos, n_measurements),
 # dictionary of photo_row -> photo_path,
 # array that matches each photo to a person id
