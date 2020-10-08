@@ -1,0 +1,8 @@
+matplotlib
+numpy
+opencv-contrib-python
+Pillow
+resize-image
+scikit-learn
+scipy
+sklearn
