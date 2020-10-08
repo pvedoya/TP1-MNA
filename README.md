@@ -10,9 +10,8 @@ Previo a ejecutar el programa, debe realizar la configuración del mismo. Esto s
 6)WIDTH          = [INTEGER] # ancho de las imágenes en el path (deben ser todas iguales).
 7)PEOPLE_PER_SET = [INTEGER] # cuántas carpetas con personas distintas se encuentran en el path.
 8)IMG_PER_PERSON = [INTEGER] # cuántas imagenes van a ser tomadas por persona.
-9)EIGENVECTORS   = [INTEGER] # cuántos autovectores se utilizan para la asignación de una foto a una persona.
+9)EIGENVECTORS   = [INTEGER] # cuántos autovectores se utilizan como base de representacion de las imágenes.
 10)PHOTO         = [STRING] # si IS_VIDEO está en FALSE, el programa buscará la imagen en este path para asignar a quien corresponde.
-11)THRESHOLD     = [INTEGER] # threshold con el que se asigna una foto a una persona.
 
 Aclaración: Si usted asigna IS_KPCA como TRUE, al inicializar el programa le aparecerá una pantalla de reconocimiento facial, donde le pedimos que se alinee con la cámara hasta que aparezca un recuadro verde, indicando que su cara fue reconocida, y presione la tecla "s" para sacar la foto, luego de ésto el programa procederá automáticamente a identificar la imagen. 
 

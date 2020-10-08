@@ -18,8 +18,6 @@ def KPCA(images, anon, eigenvector_cap, degree):
     # Eigenvalues and eigenvectors
     eigenvals, eigenvec = eig(K)
 
-    # TODO Reorder eigenvalues
-
     for col in range(eigenvec.shape[1]):
         eigenvec[:, col] = eigenvec[:, col] / eigenvals[col]
 
