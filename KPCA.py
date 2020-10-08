@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn import svm
 from utils import eig
+from sklearn.preprocessing import StandardScaler
 
 
 def KPCA(images, anon, eigenvector_cap, degree):
@@ -24,6 +25,12 @@ def KPCA(images, anon, eigenvector_cap, degree):
 
     # Projection
     images_projection = np.dot(K.T, eigenvec)
+
+    # Standardize weights
+    scaler = StandardScaler()
+    scaled_weights = scaler.fit_transform(images_projection)
+    images_projection = scaled_weights
+
     uno_matrix_anon = np.ones([1, images_quantity]) / images_quantity
     Kanon = (np.dot(anon, images.T) / images_quantity + 1) ** degree
     Kanon = Kanon - np.dot(uno_matrix_anon, K) - np.dot(Kanon, uno_matrix) + np.dot(uno_matrix_anon, np.dot(K, uno_matrix))

@@ -5,6 +5,7 @@ from typing import Tuple
 import matplotlib.pyplot as plt
 from sklearn import svm
 from numpy import linalg
+from sklearn.preprocessing import StandardScaler
 
 ITERATIONS = 50
 
@@ -114,9 +115,9 @@ def generate_face(vector, height, width, path):
     return
 
 
-def calculate_match(values_matrix, groups, test, svm_c):
+def calculate_match(values_matrix, groups, test, svm_c, svm_iter):
     print('Calculating svm...')
-    svc = svm.LinearSVC(C=svm_c)
+    svc = svm.LinearSVC(C=svm_c, max_iter=svm_iter)
     svc.fit(values_matrix, groups)
     match = svc.predict(test)[0]
     print('svm done.')

@@ -3,8 +3,9 @@ from os.path import join, isdir
 import numpy as np
 from utils import change_base
 from utils import eig
+from sklearn.preprocessing import StandardScaler
 
-DEC = 5
+DEC = 7
 
 
 def PCA(images, anon_vector, eigenvectors_cap):
@@ -48,6 +49,11 @@ def PCA(images, anon_vector, eigenvectors_cap):
 
     # Weights of photo matrix on base of covariance eigenvectors
     W = change_base(np.transpose(images_og), C_eigvecs, mean_image)
+
+    # Standardize weights
+    scaler = StandardScaler()
+    scaled_weights = scaler.fit_transform(W)
+    W = scaled_weights
 
     # Weights of anonymous photo
     anon_weight = change_base(np.reshape(anon_vector, [len(anon_vector[0]), 1]), C_eigvecs, mean_image)
