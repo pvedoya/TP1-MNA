@@ -112,17 +112,10 @@ def generate_face(vector, height, width, path):
     return
 
 
-def calculate_match_percentages(values_matrix, groups, test):
+def calculate_match(values_matrix, groups, test):
     svc = svm.LinearSVC()
     svc.fit(values_matrix, groups)
-    distinct_groups_len = len(list(dict.fromkeys(groups)))
-    distinct_groups = list(range(1, distinct_groups_len+1))
-    percentages = np.zeros(len(distinct_groups))
-    i = 0
-    for group in distinct_groups:
-        percentages[i] = svc.score(test, [group])
-        i += 1
-    return percentages
+    return svc.predict(test)[0]
 
 
 def power_method(A: np.ndarray, x: np.ndarray = 'none', tolerance: float = 1e-10) -> Tuple[float, np.ndarray]:
