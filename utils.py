@@ -72,10 +72,13 @@ def find_closest_match(vector, matrix):
 
 def generate_photo_matrix(photo_set_path, height, width, people_amount, per_person_amount):
     photo_area = height * width
-    people_area = people_amount * per_person_amount
 
     dirs = [f for f in listdir(photo_set_path)
             if isdir(join(photo_set_path, f))]
+
+    people_amount = len(dirs)
+    people_area = people_amount * per_person_amount
+
     photo_matrix = np.zeros([people_area, photo_area])
 
     photo_dict = {}
