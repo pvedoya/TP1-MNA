@@ -4,7 +4,7 @@ from sklearn import svm
 from utils import eig
 
 
-def KPCA(images, anon, eigenvectors, degree):
+def KPCA(images, anon, eigenvector_cap, degree):
     images_quantity = len(images)
 
     # Kernel matrix
@@ -30,4 +30,5 @@ def KPCA(images, anon, eigenvectors, degree):
     anon_projection = np.dot(Kanon, eigenvec)
 
     # Reduced projeccion
+    eigenvectors = min(eigenvector_cap, len(images_projection[0]))
     return images_projection[:, 0:eigenvectors], anon_projection[:, 0:eigenvectors]

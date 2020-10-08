@@ -32,7 +32,7 @@ threshold = config.getfloat('RESULTS_DATA', 'THRESHOLD')
 # dictionary of photo_row -> photo_path,
 # array that matches each photo to a person id
 # and dictionary of person_id -> person_name
-photo_matrix, photo_dict, people_groups, people_dict = generate_photo_matrix(photo_set_path, photo_height, photo_width, people_amount,
+photo_matrix, people_groups, people_dict = generate_photo_matrix(photo_set_path, photo_height, photo_width, people_amount,
                                                  per_person_amount)
 
 # Creates array of anonymous photo to analize
