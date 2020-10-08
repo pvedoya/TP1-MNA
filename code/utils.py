@@ -5,7 +5,6 @@ from typing import Tuple
 import matplotlib.pyplot as plt
 from sklearn import svm
 from numpy import linalg
-from sklearn.preprocessing import StandardScaler
 
 ITERATIONS = 50
 

@@ -1,6 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
-from sklearn import svm
 from utils import eig
 from sklearn.preprocessing import StandardScaler
 
