@@ -38,7 +38,7 @@ def face_recognition(img_width=64, img_height=64, name='default', path='./', pic
     sensitivity = 180
     is_square_ratio = img_height == img_width
 
-    faceCascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+    faceCascade = cv2.CascadeClassifier('lib/opencv_xml/haarcascade_frontalface_default.xml')
 
     video_capture = cv2.VideoCapture(0)
 
