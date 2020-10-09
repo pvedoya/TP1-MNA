@@ -1,11 +1,11 @@
 import configparser
 import numpy as np
-from utils import generate_photo_matrix
-from utils import generate_photo_vector
-from utils import calculate_match
-from KPCA import KPCA
-from PCA import PCA
-from face_detection import face_recognition
+from lib.utils import generate_photo_matrix
+from lib.utils import generate_photo_vector
+from lib.utils import calculate_match
+from lib.KPCA import KPCA
+from lib.PCA import PCA
+from lib.face_detection import face_recognition
 import emoji
 
 # import warnings
