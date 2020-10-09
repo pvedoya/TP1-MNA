@@ -1,6 +1,6 @@
 import numpy as np
-from utils import change_base
-from utils import eig
+from lib.utils import change_base
+from lib.utils import eig
 from sklearn.preprocessing import StandardScaler
 
 DEC = 7

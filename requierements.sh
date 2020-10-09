@@ -5,5 +5,4 @@ pip install sklearn
 pip install opencv-contrib-python 
 pip install resize-image
 pip install emoji
-pip install warnings
 

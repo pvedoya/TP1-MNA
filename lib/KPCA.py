@@ -1,5 +1,5 @@
 import numpy as np
-from utils import eig
+from lib.utils import eig
 from sklearn.preprocessing import StandardScaler
 
 
